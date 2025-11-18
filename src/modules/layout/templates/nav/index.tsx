@@ -62,7 +62,7 @@ export default async function Nav() {
           <div className={`${styles.logo} flex items-center justify-start`}>
             <LocalizedClientLink href="/" className="flex items-center">
               <span className="sr-only">Molecule</span>
-              <Logo className="h-6 w-auto" />
+              <Logo className="h-8 w-auto" />
             </LocalizedClientLink>
           </div>
 
