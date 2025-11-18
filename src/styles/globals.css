@@ -58,6 +58,15 @@
     @apply px-4 py-2 border border-black rounded-full hover:bg-black hover:text-white transition-colors duration-200 ease-in;
   }
 
+  /* Make all buttons fully rounded */
+  button,
+  .btn,
+  [role="button"],
+  input[type="button"],
+  input[type="submit"] {
+    @apply rounded-full;
+  }
+
   .text-xsmall-regular {
     @apply text-[10px] leading-4 font-normal;
   }

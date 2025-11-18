@@ -1,60 +1,110 @@
-import { Suspense } from "react"
-
-import { listRegions } from "@lib/data/regions"
-import { StoreRegion } from "@medusajs/types"
+import { retrieveCart } from "@lib/data/cart"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
-import CartButton from "@modules/layout/components/cart-button"
-import SideMenu from "@modules/layout/components/side-menu"
+import MobileMenu from "@modules/layout/components/mobile-menu"
+import SearchIcon from "@modules/common/icons/search-icon"
+import AccountIcon from "@modules/common/icons/account-icon"
+import CartIcon from "@modules/common/icons/cart-icon"
+import Logo from "@modules/common/components/logo"
+import styles from "./nav.module.css"
+
+const mainNavItems = [
+  { name: "Home", href: "/" },
+  { name: "About Us", href: "/pages/about-us" },
+  { name: "Catalog", href: "/store" },
+  { name: "Learn", href: "/learn" },
+  { name: "Contact Us", href: "/pages/contact" },
+]
 
 export default async function Nav() {
-  const regions = await listRegions().then((regions: StoreRegion[]) => regions)
+  const cart = await retrieveCart().catch(() => null)
+  const cartCount = cart?.items?.reduce((acc, item) => acc + item.quantity, 0) || 0
 
   return (
-    <div className="sticky top-0 inset-x-0 z-50 group">
-      <header className="relative h-16 mx-auto border-b duration-200 bg-white border-ui-border-base">
-        <nav className="content-container txt-xsmall-plus text-ui-fg-subtle flex items-center justify-between w-full h-full text-small-regular">
-          <div className="flex-1 basis-0 h-full flex items-center">
-            <div className="h-full">
-              <SideMenu regions={regions} />
+    <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-[20px]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Grid layout: main-nav | logo | secondary-nav on mobile/tablet, logo | main-nav | secondary-nav on desktop */}
+        <div className={styles.headerGrid}>
+          {/* Main Navigation */}
+          <div className={`${styles.mainNav} flex items-center gap-4`}>
+            {/* Mobile Menu Button */}
+            <div className="lg:hidden">
+              <MobileMenu />
             </div>
+
+            {/* Mobile Search - visible on mobile, hidden on desktop */}
+            <LocalizedClientLink
+              href="/search"
+              className="sm:hidden p-2 hover:text-gray-900 transition-colors"
+              aria-label="Search"
+            >
+              <span className="sr-only">Search</span>
+              <SearchIcon />
+            </LocalizedClientLink>
+
+            {/* Desktop Navigation Links */}
+            <nav className="hidden lg:flex items-center justify-center w-full" role="navigation">
+              <ul className="flex items-center gap-6" role="list">
+                {mainNavItems.map((item) => (
+                  <li key={item.name}>
+                    <LocalizedClientLink
+                      href={item.href}
+                      className="text-sm hover:text-gray-900 transition-colors"
+                    >
+                      {item.name}
+                    </LocalizedClientLink>
+                  </li>
+                ))}
+              </ul>
+            </nav>
           </div>
 
-          <div className="flex items-center h-full">
-            <LocalizedClientLink
-              href="/"
-              className="txt-compact-xlarge-plus hover:text-ui-fg-base uppercase"
-              data-testid="nav-store-link"
-            >
-              Medusa Store
+          {/* Logo */}
+          <div className={`${styles.logo} flex items-center justify-start`}>
+            <LocalizedClientLink href="/" className="flex items-center">
+              <span className="sr-only">Molecule</span>
+              <Logo className="h-6 w-auto" />
             </LocalizedClientLink>
           </div>
 
-          <div className="flex items-center gap-x-6 h-full flex-1 basis-0 justify-end">
-            <div className="hidden small:flex items-center gap-x-6 h-full">
-              <LocalizedClientLink
-                className="hover:text-ui-fg-base"
-                href="/account"
-                data-testid="nav-account-link"
-              >
-                Account
-              </LocalizedClientLink>
-            </div>
-            <Suspense
-              fallback={
-                <LocalizedClientLink
-                  className="hover:text-ui-fg-base flex gap-2"
-                  href="/cart"
-                  data-testid="nav-cart-link"
-                >
-                  Cart (0)
-                </LocalizedClientLink>
-              }
+          {/* Secondary Navigation */}
+          <div className={`${styles.secondaryNav} flex items-center justify-end gap-4`}>
+            {/* Search - Hidden on mobile, visible on desktop */}
+            <LocalizedClientLink
+              href="/search"
+              className="hidden sm:block p-2 hover:text-gray-900 transition-colors"
+              aria-label="Search"
             >
-              <CartButton />
-            </Suspense>
+              <span className="sr-only">Search</span>
+              <SearchIcon />
+            </LocalizedClientLink>
+
+            {/* Account - Hidden on mobile, visible on desktop */}
+            <LocalizedClientLink
+              href="/account"
+              className="hidden sm:block p-2 hover:text-gray-900 transition-colors"
+              aria-label="Login"
+            >
+              <span className="sr-only">Login</span>
+              <AccountIcon />
+            </LocalizedClientLink>
+
+            {/* Cart */}
+            <LocalizedClientLink
+              href="/cart"
+              className="relative p-2 hover:text-gray-900 transition-colors"
+              aria-label="Cart"
+            >
+              <span className="sr-only">Cart</span>
+              <CartIcon />
+              {cartCount > 0 && (
+                <div className="absolute -top-1 -right-1 bg-black text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  {cartCount}
+                </div>
+              )}
+            </LocalizedClientLink>
           </div>
-        </nav>
-      </header>
-    </div>
+        </div>
+      </div>
+    </header>
   )
 }
