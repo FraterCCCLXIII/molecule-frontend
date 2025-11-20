@@ -2,9 +2,7 @@
 
 import { useState } from "react"
 import Image from "next/image"
-import FlaskIcon from "@modules/common/icons/flask-icon"
-import PlaneIcon from "@modules/common/icons/plane-icon"
-import MoleculeIcon from "@modules/common/icons/molecule-icon"
+import { FlaskConical, Plane, Network } from "lucide-react"
 
 type Feature = {
   id: number
@@ -21,8 +19,8 @@ const features: Feature[] = [
     title: "Lab-Verified Purity",
     description:
       "Every batch undergoes third-party testing by Janoshik Analytical or BioRegen (independent labs). We publish full Certificates of Analysis so you can see identity, purity, and potency for yourself. No recycled PDFs, no mystery vials.",
-    icon: <FlaskIcon className="w-6 h-6" />,
-    image: "/images/vial.png", // Replace with actual image
+    icon: <FlaskConical className="w-6 h-6" />,
+    image: "/images/pexels-fotios-photos-734973.jpg",
     imageAlt: "Lab-Verified Purity",
   },
   {
@@ -30,8 +28,8 @@ const features: Feature[] = [
     title: "Fast USA Shipping",
     description:
       "Forget about customs clearance and international delays. Our U.S. facility ships your order the same day. Pure simplicity from our lab to yours.",
-    icon: <PlaneIcon className="w-6 h-6" />,
-    image: "/images/vial.png", // Replace with actual image
+    icon: <Plane className="w-6 h-6" />,
+    image: "/images/pexels-polina-tankilevitch-3735769.jpg",
     imageAlt: "Fast USA Shipping",
   },
   {
@@ -39,8 +37,8 @@ const features: Feature[] = [
     title: "Next-Generation Compounds",
     description:
       "Get the latest and greatest. From established staples to the latest innovations in GLP1 research, our catalogue evolves with the science.",
-    icon: <MoleculeIcon className="w-6 h-6" />,
-    image: "/images/vial.png", // Replace with actual image
+    icon: <Network className="w-6 h-6" />,
+    image: "/images/pexels-thirdman-8940517.jpg",
     imageAlt: "Next-Generation Compounds",
   },
 ]
@@ -58,6 +56,9 @@ export default function FeaturesList() {
           <div className="features-list__content-container grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-[50px] items-center">
             {/* Text Area - Buttons */}
             <div className="features-list__text-area flex flex-col gap-3 order-2 md:order-1">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+                Why Choose Molecule
+              </h2>
               {features.map((feature) => (
                 <button
                   key={feature.id}
@@ -99,7 +100,7 @@ export default function FeaturesList() {
             </div>
 
             {/* Image Area */}
-            <div className="features-list__image-area relative aspect-[3/4] bg-white rounded-lg overflow-hidden order-1 md:order-2 mb-2 md:mb-0 md:h-full flex items-center">
+            <div className="features-list__image-area relative aspect-[3/4] bg-white rounded-3xl overflow-hidden order-1 md:order-2 mb-2 md:mb-0 md:h-full flex items-center">
               {features.map((feature) => (
                 <div
                   key={feature.id}
@@ -113,7 +114,7 @@ export default function FeaturesList() {
                     src={feature.image}
                     alt={feature.imageAlt}
                     fill
-                    className="features-list__main-image object-cover rounded-sm"
+                    className="features-list__main-image object-cover"
                     sizes="(max-width: 699px) 100vw, 479px"
                   />
                 </div>

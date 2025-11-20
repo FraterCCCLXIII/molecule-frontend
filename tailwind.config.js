@@ -69,6 +69,9 @@ module.exports = {
           "Ubuntu",
           "sans-serif",
         ],
+        "chakra-petch": ["var(--font-chakra-petch)", "sans-serif"],
+        "gilda-display": ["var(--font-gilda-display)", "serif"],
+        "space-mono": ["var(--font-space-mono)", "monospace"],
       },
       keyframes: {
         ring: {

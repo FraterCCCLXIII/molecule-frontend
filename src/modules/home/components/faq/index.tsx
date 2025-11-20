@@ -113,16 +113,16 @@ export default function FAQ() {
   }
 
   return (
-    <section className="w-full py-16 md:py-24 bg-[#FFFDFA] text-gray-900">
+    <section className="w-full py-16 md:py-24 text-gray-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
           {/* Intro Section */}
           <div className="section-stack__intro">
             <div className="flex flex-col gap-10">
               <div className="prose">
-                <h3 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-                  You <em className="font-normal italic">ask</em>,<br />
-                  we <span className="underline">answer.</span>
+                <h3 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight font-chakra-petch">
+                  Got questions?<br />
+                  We've got <span className="underline">answers.</span>
                 </h3>
               </div>
               {/* Placeholder for availability widget - hidden on mobile, shown on desktop */}
@@ -134,7 +134,7 @@ export default function FAQ() {
 
           {/* Accordion Section */}
           <div className="section-stack__main">
-            <div className="accordion-box rounded-lg bg-[#FFFDFA] p-6">
+            <div className="accordion-box rounded-lg p-6">
               {faqs.map((faq, index) => {
                 const isOpen = openIndex === index
                 return (

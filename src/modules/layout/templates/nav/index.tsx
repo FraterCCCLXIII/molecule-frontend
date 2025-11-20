@@ -1,17 +1,42 @@
 import { retrieveCart } from "@lib/data/cart"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import MobileMenu from "@modules/layout/components/mobile-menu"
-import SearchIcon from "@modules/common/icons/search-icon"
+import SearchTrigger from "@modules/layout/components/search-trigger"
 import AccountIcon from "@modules/common/icons/account-icon"
 import CartIcon from "@modules/common/icons/cart-icon"
 import Logo from "@modules/common/components/logo"
+import NavDropdown from "@modules/common/components/nav-dropdown"
 import styles from "./nav.module.css"
 
-const mainNavItems = [
+type NavItemLink = {
+  name: string
+  href: string
+  type?: never
+  items?: never
+}
+
+type NavItemDropdown = {
+  name: string
+  type: "dropdown"
+  items: Array<{ name: string; href: string }>
+  href?: never
+}
+
+type NavItem = NavItemLink | NavItemDropdown
+
+const mainNavItems: NavItem[] = [
   { name: "Home", href: "/" },
   { name: "About Us", href: "/pages/about-us" },
   { name: "Catalog", href: "/store" },
-  { name: "Learn", href: "/learn" },
+  {
+    name: "Resources",
+    type: "dropdown",
+    items: [
+      { name: "Peptide Calculator", href: "/calculator" },
+      { name: "Peptide Guide", href: "/pages/peptide-guide" },
+      { name: "Research", href: "/research" },
+    ],
+  },
   { name: "Contact Us", href: "/pages/contact" },
 ]
 
@@ -31,27 +56,22 @@ export default async function Nav() {
               <MobileMenu />
             </div>
 
-            {/* Mobile Search - visible on mobile, hidden on desktop */}
-            <LocalizedClientLink
-              href="/search"
-              className="sm:hidden p-2 hover:text-gray-900 transition-colors"
-              aria-label="Search"
-            >
-              <span className="sr-only">Search</span>
-              <SearchIcon />
-            </LocalizedClientLink>
-
             {/* Desktop Navigation Links */}
             <nav className="hidden lg:flex items-center justify-center w-full" role="navigation">
               <ul className="flex items-center gap-6" role="list">
                 {mainNavItems.map((item) => (
                   <li key={item.name}>
-                    <LocalizedClientLink
-                      href={item.href}
-                      className="text-sm hover:text-gray-900 transition-colors"
-                    >
-                      {item.name}
-                    </LocalizedClientLink>
+                    {item.type === "dropdown" ? (
+                      <NavDropdown label={item.name} items={item.items} />
+                    ) : (
+                      <LocalizedClientLink
+                        href={item.href}
+                        className="text-sm hover:text-gray-900 transition-colors font-space-mono"
+                        style={{ fontFamily: "var(--font-space-mono), monospace" }}
+                      >
+                        {item.name}
+                      </LocalizedClientLink>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -62,33 +82,26 @@ export default async function Nav() {
           <div className={`${styles.logo} flex items-center justify-start`}>
             <LocalizedClientLink href="/" className="flex items-center">
               <span className="sr-only">Molecule</span>
-              <Logo className="h-8 w-auto" />
+              <Logo className="h-6 w-auto" />
             </LocalizedClientLink>
           </div>
 
           {/* Secondary Navigation */}
           <div className={`${styles.secondaryNav} flex items-center justify-end gap-4`}>
-            {/* Search - Hidden on mobile, visible on desktop */}
-            <LocalizedClientLink
-              href="/search"
-              className="hidden sm:block p-2 hover:text-gray-900 transition-colors"
-              aria-label="Search"
-            >
-              <span className="sr-only">Search</span>
-              <SearchIcon />
-            </LocalizedClientLink>
+            {/* Search - Always visible */}
+            <SearchTrigger />
 
-            {/* Account - Hidden on mobile, visible on desktop */}
+            {/* Account - Always visible */}
             <LocalizedClientLink
               href="/account"
-              className="hidden sm:block p-2 hover:text-gray-900 transition-colors"
+              className="p-2 hover:text-gray-900 transition-colors"
               aria-label="Login"
             >
               <span className="sr-only">Login</span>
               <AccountIcon />
             </LocalizedClientLink>
 
-            {/* Cart */}
+            {/* Cart - Always visible */}
             <LocalizedClientLink
               href="/cart"
               className="relative p-2 hover:text-gray-900 transition-colors"

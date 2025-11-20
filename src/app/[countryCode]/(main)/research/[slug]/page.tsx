@@ -10,8 +10,18 @@ type Props = {
 async function getBlogArticle(slug: string) {
   try {
     const backendUrl = process.env.MEDUSA_BACKEND_URL || "http://localhost:9000"
+    const publishableKey = process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY
+    
+    if (!publishableKey) {
+      console.error("NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY is not set")
+      return null
+    }
+    
     const response = await fetch(`${backendUrl}/store/blog/articles/${slug}`, {
       next: { revalidate: 60 },
+      headers: {
+        "x-publishable-api-key": publishableKey,
+      },
     })
 
     if (!response.ok) {
@@ -37,7 +47,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   }
 
   return {
-    title: article.seo_title || article.title || "Learn Article | Molecule",
+    title: article.seo_title || article.title || "Research Article | Molecule",
     description: article.seo_description || article.subtitle || "",
     keywords: article.seo_keywords || "",
   }
@@ -121,26 +131,19 @@ export default async function BlogArticlePage(props: Props) {
     })
   }
 
+  // Use thumbnail_image directly like products do - it should already be a full URL
+  // Products use product.thumbnail directly without transformation
+  const thumbnailUrl = article.thumbnail_image || null
+
   return (
     <div className="min-h-screen bg-white">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
         <LocalizedClientLink
-          href="/learn"
+          href="/research"
           className="text-gray-600 hover:text-gray-900 mb-8 inline-block"
         >
-          ← Back to Learn
+          ← Back to Research
         </LocalizedClientLink>
-
-        {article.thumbnail_image && (
-          <div className="relative w-full h-64 md:h-96 mb-8 rounded-lg overflow-hidden">
-              <Image
-                src={article.thumbnail_image}
-                alt={article.title || "Learn article"}
-                fill
-                className="object-cover"
-              />
-          </div>
-        )}
 
         <article>
           {article.tags && Array.isArray(article.tags) && article.tags.length > 0 && (
@@ -166,6 +169,21 @@ export default async function BlogArticlePage(props: Props) {
 
           {article.author && (
             <p className="text-gray-500 mb-8">By {article.author}</p>
+          )}
+
+          {thumbnailUrl && (
+            <div className="relative w-full h-64 md:h-96 mb-8 rounded-2xl overflow-hidden bg-gray-100">
+              <Image
+                src={thumbnailUrl}
+                alt={article.title || "Research article"}
+                fill
+                className="object-cover rounded-2xl"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 800px"
+                style={{
+                  objectFit: "cover",
+                }}
+              />
+            </div>
           )}
 
           <div className="prose prose-lg max-w-none">

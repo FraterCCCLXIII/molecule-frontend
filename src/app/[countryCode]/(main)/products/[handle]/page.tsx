@@ -109,16 +109,23 @@ export default async function ProductPage(props: Props) {
     notFound()
   }
 
-  const pricedProduct = await listProducts({
-    countryCode: params.countryCode,
-    queryParams: { handle: params.handle },
-  }).then(({ response }) => response.products[0])
-
-  const images = getImagesForVariant(pricedProduct, selectedVariantId)
+  let pricedProduct: HttpTypes.StoreProduct | undefined
+  try {
+    const result = await listProducts({
+      countryCode: params.countryCode,
+      queryParams: { handle: params.handle },
+    })
+    pricedProduct = result.response.products[0]
+  } catch (error) {
+    console.error("Error fetching product:", error)
+    notFound()
+  }
 
   if (!pricedProduct) {
     notFound()
   }
+
+  const images = getImagesForVariant(pricedProduct, selectedVariantId)
 
   return (
     <ProductTemplate

@@ -5,24 +5,24 @@ const Hero = () => {
   return (
     <section className="w-full relative bg-white py-16 md:py-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center">
-          {/* Star Rating */}
-          <div className="flex justify-center items-center gap-1 mb-4">
-            <Star />
-            <Star />
-            <Star />
-            <Star />
-            <Star />
+        <div className="text-left">
+          {/* Star Rating & Verified Text Pill */}
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-full mb-6">
+            <div className="flex items-center gap-1">
+              <Star className="w-3 h-3" />
+              <Star className="w-3 h-3" />
+              <Star className="w-3 h-3" />
+              <Star className="w-3 h-3" />
+              <Star className="w-3 h-3" />
+            </div>
+            <span className="text-sm text-gray-600 font-space-mono" style={{ fontFamily: "var(--font-space-mono), monospace" }}>
+              Verified Purity & US Shipping
+            </span>
           </div>
-          
-          {/* Verified Text */}
-          <p className="text-sm md:text-base text-gray-600 mb-8 font-medium">
-            Verified Purity & US Shipping
-          </p>
 
           {/* Main Heading */}
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-8 max-w-4xl mx-auto leading-tight">
-            Research-Grade Peptides, <em className="font-normal italic">delivered</em>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-8 max-w-4xl leading-tight">
+            Research-grade Peptides for Advanced Protocols
           </h1>
 
           {/* CTA Button */}
