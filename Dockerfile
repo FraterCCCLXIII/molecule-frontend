@@ -13,8 +13,8 @@ WORKDIR /app
 # Enable Corepack in this stage too
 RUN corepack enable
 
-# Copy package files
-COPY package.json yarn.lock* ./
+# Copy package files and Yarn config
+COPY package.json yarn.lock* .yarnrc.yml ./
 
 # Install dependencies
 # Note: Not using --immutable here to allow lockfile cacheKey update on first build
