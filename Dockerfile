@@ -64,8 +64,9 @@ COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/yarn.lock* ./
 
 # Install only production dependencies
-# Note: --immutable is the Yarn 4 equivalent of --frozen-lockfile
-RUN yarn install --immutable --production --network-timeout 300000 && \
+# Note: Yarn 4 deprecated --production, use workspaces focus instead
+# For production, we can also just copy node_modules from builder, but installing here ensures clean deps
+RUN yarn workspaces focus --production --immutable --network-timeout 300000 && \
     yarn cache clean
 
 # Copy necessary files from builder
