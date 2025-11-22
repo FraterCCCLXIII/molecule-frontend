@@ -59,15 +59,14 @@ RUN adduser --system --uid 1001 nextjs
 # Enable Corepack in runner stage
 RUN corepack enable
 
-# Copy package files for production dependencies
+# Copy package files
 COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/yarn.lock* ./
+COPY --from=builder /app/.yarnrc.yml ./
 
-# Install only production dependencies
-# Note: Yarn 4 deprecated --production, use workspaces focus instead
-# For production, we can also just copy node_modules from builder, but installing here ensures clean deps
-RUN yarn workspaces focus --production --immutable --network-timeout 300000 && \
-    yarn cache clean
+# Copy node_modules from builder (already has all dependencies installed)
+# This avoids the Yarn 4 --production deprecation issue
+COPY --from=builder /app/node_modules ./node_modules
 
 # Copy necessary files from builder
 COPY --from=builder /app/public ./public
