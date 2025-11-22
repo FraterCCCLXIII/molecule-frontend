@@ -101,7 +101,7 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
             id: product.id,
             title: product.title,
             description: product.description || undefined,
-            href: `/${countryCode}/products/${product.handle}`,
+            href: `/products/${product.handle}`,
             thumbnail: product.thumbnail || undefined,
           })
         })
@@ -123,7 +123,7 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
                 type: "page",
                 id: page.href,
                 title: page.title,
-                href: `/${countryCode}${page.href}`,
+                href: page.href,
               })
         }
       })
@@ -155,7 +155,7 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
                 id: article.id,
                 title: article.title,
                 description: article.subtitle,
-                href: `/${countryCode}/research/${article.url_slug}`,
+                href: `/research/${article.url_slug}`,
                 thumbnail: article.thumbnail_image || undefined,
               })
             }
