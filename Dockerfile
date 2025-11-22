@@ -17,8 +17,8 @@ RUN corepack enable
 COPY package.json yarn.lock* ./
 
 # Install dependencies
-# Note: --immutable is the Yarn 4 equivalent of --frozen-lockfile
-RUN yarn install --immutable --network-timeout 300000
+# Note: Not using --immutable here to allow lockfile cacheKey update on first build
+RUN yarn install --network-timeout 300000
 
 # Rebuild the source code only when needed
 FROM base AS builder
