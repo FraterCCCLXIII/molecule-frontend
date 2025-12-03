@@ -72,6 +72,7 @@ COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/next.config.js ./next.config.js
+COPY --from=builder /app/check-env-variables.js ./check-env-variables.js
 
 # Set the correct permission for prerender cache
 RUN chown -R nextjs:nodejs /app
